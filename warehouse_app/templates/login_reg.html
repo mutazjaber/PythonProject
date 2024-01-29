@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	{% load static %}
+	<link rel="stylesheet" href="{% static 'login_reg.css' %}" />
+	<link href="{% static 'https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap'%}" rel="stylesheet">
+	<link rel="stylesheet"
+		href="{% static 'https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'%}">
+	<!-- <link rel="stylesheet" href="style.css"> -->
+	<title>login_Registration</title>
+
+</head>
+
+<body>
+	<div class="container" id="container">
+		<div class="form-container sign-up-container" style="overflow: auto;">
+			<!-- {% if messages %}
+			<ul class="messages" style="list-style: none; color: red; font-size: 10px;">
+				{% for message in messages %}
+				<li {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+				{% endfor %}
+
+			</ul>
+			{% endif %} -->
+			<form action="/register" method="post" id="register_form">
+				{% csrf_token %}
+				<h1 id="wight-color">Create Account</h1>
+				<input type="text" placeholder="First Name" name="first_name" form="register_form"
+					id="register_first_name" />
+				<div id="register_first_name_msg" style="font-size: 10px; align-self: self-start; color: red;"></div>
+
+				<input type="text" placeholder="Last Name" name="last_name" id="register_last_name" />
+				<div id="register_last_name_msg" style="font-size: 10px; align-self: self-start; color: red;"></div>
+
+				<input type="email" placeholder="Email" name="email" id="email" />
+				<div id="register_email_msg" style="font-size: 10px; align-self: self-start; color: red;"></div>
+
+
+				<input type="password" placeholder="Password" name="password" id="register_password" />
+				<div id="register_password_msg" style="font-size: 10px; align-self: self-start; color: red;"></div>
+
+
+				<input type="password" placeholder="Confirm Password" name="confrim_password"
+					id="register_confirm_password" />
+
+
+				<button value="Register">Sign Up</button>
+				<a href="/about_us" class="link-primary">About Us</a>
+			</form>
+		</div>
+		<div class="form-container sign-in-container">
+			<form action="/login" method="post" id="login_from">
+				{% csrf_token %}
+				<h1 id="wight-color">Sign in</h1>
+				<input type="email" placeholder="Email" name="email" id="login_email" />
+				<div id="email_login_msg" style="font-size: 10px; align-self: self-start;"></div>
+				<input type="password" placeholder="Password" name="password" id="login_password" />
+				<div id="password_login_msg" style="font-size: 10px; align-self: self-start; padding-bottom: 5px ;">
+				</div>
+				<button value="Login">Sign In</button>
+				<a href="/about_us" class="link-primary">About Us</a>
+			</form>
+		</div>
+		<div class="overlay-container">
+			<div class="overlay">
+				<div class="overlay-panel overlay-left">
+					<h1>Welcome Back!</h1>
+					<p>To keep connected with warehouse please login with your personal info</p>
+					<button class="ghost" id="signIn">Sign In</button>
+
+				</div>
+				<div class="overlay-panel overlay-right">
+					<h1>Welcome Back !</h1>
+					<p>Enter your personal details and start managing the warehouse</p>
+					<button class="ghost" id="signUp">Sign Up</button>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- <ul class="messages" style="list-style: none;">
+		{% for message in messages %}
+		<li {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+		{% endfor %}
+	</ul> -->
+
+
+
+
+	<script src="{% static 'js/login.js' %}"></script>
+
+
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
+	<script>
+		$(document).ready(function () {
+			$('#login_from').keyup(function () {
+				var data = $("#login_from").serialize()
+				console.log(data)
+
+				$.ajax({
+					method: "POST",
+					url: "/check_login",
+					headers: {
+						"X-Requested-With": "XMLHttpRequest",
+						"X-CSRFToken": getCookie("csrftoken"),
+					},
+					data: data
+				})
+
+					.done(function (data) {
+						let email_login_message = ''
+						let password_login_message = ''
+
+						if (data.email_login_msg1) {
+							email_login_message = ` <div style="color: red;">${data.email_login_msg1}</div> `
+						}
+						else if (data.email_login_msg2) {
+							email_login_message = ` <div style="color: green;">${data.email_login_msg2}</div> `
+						}
+						if (data.password_login_msg1) {
+							password_login_message = ` <div style="color: red;">${data.password_login_msg1}</div> `
+						}
+						else if (data.password_login_msg2) {
+							password_login_message = ` <div style="color: green;">${data.password_login_msg2}</div> `
+						}
+						$('#email_login_msg').html(email_login_message)
+						$('#password_login_msg').html(password_login_message)
+					})
+			})
+		})
+
+
+
+
+		$(document).ready(function () {
+			var delayTimer;
+			function checkData(options) {
+				if (!options.data[options.fieldName]) {
+					options.element.html("");
+				} else {
+					$.ajax({
+						type: "POST",
+						url: "/check_register",
+						headers: {
+							"X-Requested-With": "XMLHttpRequest",
+							"X-CSRFToken": getCookie("csrftoken"),
+						},
+						data: options.data
+					}).done(function (response) {
+						var message = ''
+						if (response.message[options.fieldName]) {
+							message = response.message[options.fieldName];
+						}
+						options.element.html(message);
+					});
+				}
+			}
+
+			function addListeners(fieldName) {
+				$('[name="' + fieldName + '"]').keyup(function () {
+					var $this = $(this)
+					clearTimeout(delayTimer);
+					delayTimer = setTimeout(function () {
+						var info = {}
+						if (fieldName.includes("password")) {
+							fieldName = "password"
+							info['password'] = $("[name='password']").val()
+							info['confrim_password'] = $("[name='confrim_password']").val()
+						} else {
+							info[fieldName] = $this.val();
+						}
+						info["target"] = fieldName;
+
+						checkData({
+							element: $('#register_' + fieldName + '_msg'),
+							data: info,
+							fieldName: fieldName
+						});
+					}, 500);
+				})
+			}
+
+			// Setting up event listeners for each field
+			addListeners("email");
+			addListeners("first_name");
+			addListeners("last_name");
+			addListeners("password");
+			addListeners("confrim_password");
+		});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		function getCookie(name) {
+			let cookieValue = null;
+			if (document.cookie && document.cookie !== "") {
+				const cookies = document.cookie.split(";");
+				for (let i = 0; i < cookies.length; i++) {
+					const cookie = cookies[i].trim();
+					if (cookie.substring(0, name.length + 1) === (name + "=")) {
+						cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+						break;
+					}
+				}
+			}
+			return cookieValue;
+		}
+	</script>
+</body>
+
+
+</html>

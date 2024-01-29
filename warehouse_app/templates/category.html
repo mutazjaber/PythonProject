@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title>Categories</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light ps-5 pe-5">
+        <div class="container-fluid" >
+            <a class="navbar-brand" ><img width="30" height="30" src="https://img.icons8.com/ios-filled/100/user-male-circle.png" alt="user-male-circle"/>   {{current_user.first_name}} {{current_user.last_name}}</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="/dashboard">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/dashboard/categories">Categories</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dashboard/stores" >Stores</a>
+                    </li>
+
+                </ul>
+                <ul class="navbar-nav d-flex">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout" ><img width="30" height="30" src="https://img.icons8.com/external-tal-revivo-bold-tal-revivo/96/external-online-account-logout-with-arrow-direction-mark-login-bold-tal-revivo.png" alt="external-online-account-logout-with-arrow-direction-mark-login-bold-tal-revivo"/>    Log Out</a>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+    <div class="container mt-6">
+        <h2 style="margin-top: 10px;">Categories</h2>
+        <table class="table table-bordered table-striped table-responsive">
+            <thead class="thead-light">
+            </thead>
+            <tbody>
+                {% for category,items in dictionary.items %}
+                <tr>
+                    <form action="/category/delete_category/{{category.id}}" method="post" id="delete_category">
+                        {% csrf_token %}
+                    </form>
+
+                    <td>{{category.name}}
+                    </td>
+                    <td class="col-2 text-center">
+                        <button type="submit" form="delete_category" class="btn btn-danger"
+                            >Delete</button>
+
+
+                    </td>
+                    <td>
+                        <form action="/category/add_item" method="post" id="add_item_{{category.id}}">
+                            <input type="hidden" name="which_form" value="category" id="">
+                            <input type="hidden" name="category_id" value="{{category.id}}" id="">
+                            {% csrf_token %}
+                            <select class="form-control" name="item_id" form="add_item_{{category.id}}">
+                                <option value="">Add Item</option>
+
+
+                                {% for item in items %}
+
+                                <option value="{{item.id}}">{{item.name}}</option>
+
+                                {% endfor %}
+
+                            </select>
+                        </form>
+
+
+                    </td>
+                    <td class="col-2 text-center"><button type="submit" form="add_item_{{category.id}}" class="btn btn-primary" style="background-color: #004F80;">Confirm</button>
+                    </td>
+
+                </tr>
+                {% endfor %}
+        </table>
+
+
+        <div class="card ">
+            <form action="/category/creat_category" id="add_category" method="post">
+                {% csrf_token %}
+            </form>
+            <h5 class="card-header">Create Category</h5>
+            <div class="card-body">
+                <div class="col-auto ">
+                    <label class="col-form-label">Category Name</label>
+                </div>
+                <div class="col-auto gx-5">
+                    <input type="text" class="form-control" form="add_category" name="name">
+                </div>
+                <div class="col mt-3  text-center">
+                    <button class="btn btn-primary col-12 col-lg-3" type="submit" form="add_category" style="background-color: #004F80;">Create
+                        Category</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+
+
+</body>
+
+</html>

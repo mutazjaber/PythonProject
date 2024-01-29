@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title>Dashboard</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light ps-5 pe-5">
+        <div class="container-fluid" >
+            <a class="navbar-brand" ><img width="30" height="30" src="https://img.icons8.com/ios-filled/100/user-male-circle.png" alt="user-male-circle"/>   {{current_user.first_name}} {{current_user.last_name}}</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/dashboard">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dashboard/categories">Categories</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dashboard/stores" >Stores</a>
+                    </li>
+
+                </ul>
+                <ul class="navbar-nav d-flex">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout" ><img width="30" height="30" src="https://img.icons8.com/external-tal-revivo-bold-tal-revivo/96/external-online-account-logout-with-arrow-direction-mark-login-bold-tal-revivo.png" alt="external-online-account-logout-with-arrow-direction-mark-login-bold-tal-revivo"/>    Log Out</a>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+    <div class="container-fluid container-md ">
+        <table class="table table-striped border border-1 rounded mt-5 table">
+            <thead>
+                <tr>
+                    <th scope="col"><img width="30" height="30" src="https://img.icons8.com/color/96/open-box.png" alt="open-box"/>Items</th>
+                    <th scope="col"><img width="30" height="30" src="https://img.icons8.com/external-kmg-design-outline-color-kmg-design/64/external-boxes-shipping-delivery-kmg-design-outline-color-kmg-design.png" alt="external-boxes-shipping-delivery-kmg-design-outline-color-kmg-design"/>Quantity</th>
+                    <th scope="col"><img width="30" height="30" src="https://img.icons8.com/ios-filled/100/FAB005/average-2.png" alt="average-2"/>Price</th>
+                    <th scope="col">
+
+                        <form action="/dashboard/filter" method="post" id="filter_form">{% csrf_token %}
+                            <select class="form-select form-select-sm" name="filter" form="filter_form" id="filter_select">
+                                <option value="-1">All items</option>
+                                {% for category in categories %}
+                                <option value="{{category.id}}">
+
+
+                                    {{category.name}}</option>
+                                {% endfor %}
+                            </select>
+
+                        </form>
+
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="items_filtered">
+                {% for item in items %}
+                <tr>
+                    <th scope="row">{{item.name}}</th>
+                    <td>{{item.count}}</td>
+                    <td>{{item.price}}</td>
+                    <td class="col text-end"><button class="btn btn-primary col-4" style="min-width: 60px; background-color: #004F80;"
+                            type="button" onclick="window.location.href='/item_view/{{item.id}}'">View</button></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class=" .flex-row d-grid gap-2 d-md-flex justify-content-md ">
+            <div class="col">
+                <button class="btn btn-primary col-12" type="button"
+                    onclick="window.location.href='/create_shipment_form'" style="background-color: #004F80;"> Create Shipment</button>
+            </div>
+            <div class="col">
+                <button class="btn btn-primary col-12 " type="button"
+                    onclick="window.location.href='/add_item_form'" style="background-color: #004F80;">Create Item</button>
+            </div>
+
+        </div>
+
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
+        <script>
+            $(document).ready(function () {
+                $('#filter_select').on("change", function () {
+                    var data = { filter: $('[name="filter"]').val() }
+                    console.log(data)
+                    $.ajax({
+                        method: "POST",
+                        url: "/dashboard/filter",
+                        headers: {
+                            "X-Requested-With": "XMLHttpRequest",
+                            "X-CSRFToken": getCookie("csrftoken"),
+                        },
+                        data: data,
+                        success: function (data) {
+                            let items_dom = '';
+                            data.items.forEach(item => {
+                                items_dom += `
+                                <tr>
+                    <th scope="row">${item.name}</th>
+                    <td>${item.count}</td>
+                    <td>${item.price}</td>
+                    <td class="col text-end" ><button class="btn col-4" style="min-width: 60px; background-color: #004F80; color:white;" type="button" onclick="window.location.href='/item_view/${item.id}'" >View</button></td>
+                </tr>`
+
+                            });
+                            $("#items_filtered").html(items_dom)
+
+                            console.log("data >>> ", data)
+                        }
+                    })
+                })
+            })
+            function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== "") {
+                    const cookies = document.cookie.split(";");
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].trim();
+                        if (cookie.substring(0, name.length + 1) === (name + "=")) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+        </script>
+</body>
+
+</html>

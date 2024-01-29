@@ -1,0 +1,418 @@
+.form-wrapper {
+    max-width: 30%;
+    min-width: 310px;
+    padding: 50px 20px 20px 20px;
+    margin: 10px auto;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 5px;
+    box-shadow: 3px 3px 10px white ;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    background-color: #003055 ;
+    background-image: url(https://cdn.discordapp.com/attachments/1164504247077978145/1182723439430205600/warehouse-background.jpg?ex=6585bc09&is=65734709&hm=2e5a56bc220a8434edfe1abc4f7adbf9983400042e7e635430c12cf46b8c4921&);
+    
+}
+#textarea {
+    height: 2rem;
+    margin-top: 1rem;
+}
+
+.form-wrapper:hover {
+    transform: scale(1.05);
+    box-shadow: 10px 20px 4px rgba(50,50,93,.2),10px 15px 1px rgba(0,0,0,.1);
+}
+
+.form-group {
+    position:relative;  
+
+    & + .form-group {
+        margin-top: 30px;
+    }
+}
+
+.form-label {
+    position: absolute;
+    left: 12%;
+    top: 10px;
+    color: #999;
+    background-color: #fff;
+    z-index: 10;
+    transition: transform 150ms ease-out, font-size 150ms ease-out;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    padding-left:10px;
+}
+
+.focused .form-label {
+    transform: translateY(-125%);
+    font-size: 1.1em;
+    padding: 2%;  
+
+    border: solid 1px rgb(255, 255, 255);
+    border-radius: 5%;
+    
+
+
+}
+
+.form-input {
+    position: relative;
+    padding: 12px 0px 5px 0;
+    width: 100%;
+    outline: 0;
+    border: 0;
+    box-shadow: 0 1px 0 0 #e5e5e5;
+    transition: box-shadow 150ms ease-out;
+}
+
+.form-input:focus {
+    box-shadow: 0 2px 0 0 blue;
+}
+
+.form-input.filled {
+    box-shadow: 0 2px 0 0 lightgreen;
+}
+
+.save-button {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-top: 15px;
+    background-color:rgba(0, 30, 255);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    color: rgb(4, 4, 50);
+    margin-left: 70%;
+    text-shadow: 20px black ;
+}
+.form-wrapper:hover .save-button {
+background-color: gold; /* Change to yellow on hover */
+transform: scale(1.05);
+    box-shadow: 0 20px 40px rgba(50,50,93,.2),0 15px 15px rgba(0,0,0,.1);
+}
+
+    .save-button:hover {
+        background-color: rgb(138, 212, 0);
+    }
+    @import url('https://fonts.googleapis.com/css?family=Roboto');
+
+body{
+    font-family: 'Roboto', sans-serif;
+    /* background-image: url(warehouse-background.jpg); */
+    /* max-width: 30%;
+    min-width: 370px; */
+    /* padding: 50px 30px 50px 30px; */
+    /* margin: 10px auto; */
+    
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 5px;
+    /* box-shadow: 3px 3px 10px white ; */
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    /* background-color:rgb(95 97 208) ; */
+    
+}
+* {
+    margin: 0;
+    padding: 0;
+}
+i {
+    margin-right: 10px;
+}
+/*----------bootstrap-navbar-css------------*/
+
+.navbar-mainbg{
+    background-color: #003055;
+    padding: 0px;
+    
+}
+#navbarSupportedContent{
+    overflow: hidden;
+    position: relative;
+    margin-left: 10%;
+    
+}
+#navbarSupportedContent ul{
+    padding: 0px;
+    margin: 0px;
+}
+#navbarSupportedContent ul li a i{
+    margin-right: 10px;
+}
+#navbarSupportedContent li {
+    list-style-type: none;
+    float: left;
+}
+#navbarSupportedContent ul li a{
+    color:gold;
+    text-decoration: none;
+    font-size: 15px;
+    display: block;
+    padding: 20px 20px;
+    transition-duration:0.6s;
+    transition-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    position: relative;
+}
+#navbarSupportedContent>ul>li.active>a{
+    color: #5161ce;
+    background-color: transparent;
+    transition: all 0.7s;
+}
+#navbarSupportedContent a:not(:only-child):after {
+    content: "\f105";
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    font-size: 14px;
+    font-family: "Font Awesome 5 Free";
+    display: inline-block;
+    padding-right: 3px;
+    vertical-align: middle;
+    font-weight: 900;
+    transition: 0.5s;
+}
+#navbarSupportedContent .active>a:not(:only-child):after {
+    transform: rotate(90deg);
+}
+.hori-selector{
+    display:inline-block;
+    position:absolute;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    transition-duration:0.6s;
+    transition-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    background-color: #fff;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    margin-top: 10px;
+}
+.hori-selector .right,
+.hori-selector .left{
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    background-color: #fff;
+    bottom: 10px;
+}
+.hori-selector .right{
+    right: -25px;
+}
+.hori-selector .left{
+    left: -25px;
+}
+.hori-selector .right:before,
+.hori-selector .left:before{
+    content: '';
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #003055;
+}
+.hori-selector .right:before{
+    bottom: 0;
+    right: -25px;
+}
+.hori-selector .left:before{
+    bottom: 0;
+    left: -25px;
+}
+
+
+@media(min-width: 992px){
+    .navbar-expand-custom {
+        -ms-flex-flow: row nowrap;
+        flex-flow: row nowrap;
+        -ms-flex-pack: start;
+        justify-content: flex-start;
+    }
+    .navbar-expand-custom .navbar-nav {
+        -ms-flex-direction: row;
+        flex-direction: row;
+    }
+    .navbar-expand-custom .navbar-toggler {
+        display: none;
+    }
+    .navbar-expand-custom .navbar-collapse {
+        display: -ms-flexbox!important;
+        display: flex!important;
+        -ms-flex-preferred-size: auto;
+        flex-basis: auto;
+    }
+}
+
+
+@media (max-width: 991px){
+    #navbarSupportedContent ul li a{
+        padding: 12px 30px;
+    }
+    .hori-selector{
+        margin-top: 0px;
+        margin-left: 10px;
+        border-radius: 0;
+        border-top-left-radius: 25px;
+        border-bottom-left-radius: 25px;
+    }
+    .hori-selector .left,
+    .hori-selector .right{
+        right: 10px;
+    }
+    .hori-selector .left{
+        top: -25px;
+        left: auto;
+    }
+    .hori-selector .right{
+        bottom: -25px;
+    }
+    .hori-selector .left:before{
+        left: -25px;
+        top: -25px;
+    }
+    .hori-selector .right:before{
+        bottom: -25px;
+        left: -25px;
+    }
+}
+
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+}
+
+body {
+font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+.main-container {
+scale: 0.9;
+padding: 30px;
+}
+
+/* HEADING */
+
+.heading {
+text-align: center;
+}
+
+.heading__title {
+font-weight: 600;
+}
+
+.heading__credits {
+margin: 10px 0px;
+color: #888888;
+font-size: 25px;
+transition: all 0.5s;
+}
+
+.heading__link {
+text-decoration: none;
+}
+
+.heading__credits .heading__link {
+color: inherit;
+}
+
+/* CARDS */
+
+.cards {
+display: flex;
+flex-wrap: wrap;
+justify-content: space-between;
+}
+
+.card {
+margin: 20px;
+padding: 20px;
+width: 500px;
+min-height: 200px;
+display: grid;
+grid-template-rows: 20px 50px 1fr 50px;
+border-radius: 10px;
+box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.25);
+transition: all 0.2s;
+}
+
+.card:hover {
+box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.4);
+transform: scale(1.01);
+}
+
+.card__link,
+.card__exit,
+.card__icon {
+position: relative;
+text-decoration: none;
+color: rgba(255, 255, 255, 0.9);
+}
+
+.card__link::after {
+position: absolute;
+top: 25px;
+left: 0;
+content: "";
+width: 0%;
+height: 3px;
+background-color: rgba(255, 255, 255, 0.6);
+transition: all 0.5s;
+}
+
+.card__link:hover::after {
+width: 100%;
+}
+
+.card__exit {
+grid-row: 1/2;
+justify-self: end;
+}
+
+.card__icon {
+grid-row: 2/3;
+font-size: 30px;
+}
+
+.card__title {
+grid-row: 3/4;
+font-weight: 400;
+color: #ffffff;
+}
+
+.card__apply {
+grid-row: 4/5;
+align-self: center;
+}
+
+/* CARD BACKGROUNDS */
+
+.card-1 {
+background: radial-gradient(#1fe4f5, #3fbafe);
+}
+
+.card-2 {
+background: radial-gradient(#fbc1cc, #fa99b2);
+}
+
+.card-3 {
+background: radial-gradient(#76b2fe, #b69efe);
+}
+
+.card-4 {
+background: radial-gradient(#60efbc, #58d5c9);
+}
+
+.card-5 {
+background: radial-gradient(#f588d8, #c0a3e5);
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 1600px) {
+.cards {
+    justify-content: center;
+}
+}
